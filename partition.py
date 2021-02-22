@@ -180,7 +180,7 @@ def partition():
 							os.system("pvs -o +pv_used")
 							vg_name = input("Enter your VG name: ")
 							pv_remove = input("Enter your PV name which you want to remove: ")
-							os.system("pvmove {pv_remove}> /dev/null")
+							os.system("pvmove --alloc anywhere {pv_remove}> /dev/null")
 							os.system("vgremove {vg_name} {pv_remove}")
 
 
