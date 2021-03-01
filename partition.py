@@ -13,17 +13,17 @@ def format_type(disk_name):
 				format = int(input("Enter your Choice: "))
 
 				if format == 1:
-					os.system(f"mkfs.ext2 /dev/{disk_name}1 > /dev/null")
+					os.system(f"mkfs.ext2 /dev/{disk_name} > /dev/null")
 					os.system("sleep 3")
 					os.system("clear")
 					mountpoint(disk_name)
 				if format == 2:
-					os.system(f"mkfs.ext3 /dev/{disk_name}1 > /dev/null")
+					os.system(f"mkfs.ext3 /dev/{disk_name} > /dev/null")
 					os.system("sleep 3")
 					os.system("clear")
 					mountpoint(disk_name)
 				if format == 3:
-					os.system(f"mkfs.ext4 /dev/{disk_name}1 > /dev/null")
+					os.system(f"mkfs.ext4 /dev/{disk_name} > /dev/null")
 					os.system("sleep 3")
 					os.system("clear")
 					mountpoint(disk_name)
@@ -31,6 +31,7 @@ def format_type(disk_name):
 
 def partition():
 	while True:
+		os.system("clear")
 		print(""" Which Service You Want To Use?
 		Press 1. Check about Your Partion Tables
 		Press 2. Create a New Partition
@@ -46,22 +47,26 @@ def partition():
 			input("\nPress any key to continue...")
 			os.system("clear")
 		elif channel == 2:
-			os.system("clear")
-			print("""Create a New Partition
-			Press 1. Create Static Partition
-			Press 2. Create LVM Partition
-			Press 3. Go To Main Menu
-			Press 4. To Exit
-			""")
-			option2_1 = int(input("Enter Your Choice: "))
+			while True:
+				os.system("clear")
+				print("""Create a New Partition
+				Press 1. Create Static Partition
+				Press 2. Create LVM Partition
+				Press 3. Go To Main Menu
+				Press 4. To Exit
+				""")
+				option2_1 = int(input("Enter Your Choice: "))
 
-			while True: 
 				if option2_1 == 1:
 					os.system("clear")
 					os.system("fdisk -l")
 					disk_name = input("Enter your disk name(e.g-sda): ")
 					os.system(f"fdisk /dev/{disk_name}")
-					format_type(disk_name)
+					partition_name = input("Enter name of the partition you created(or if not created, leave it empty): ")
+					if partition_name == '':
+						continue
+					else:
+						format_type(partition_name)
 		
 				elif option2_1 == 2:
 					os.system("clear")
@@ -76,9 +81,7 @@ def partition():
 					format_type(disk_name)
 				
 				elif option2_1 == 3:
-					continue
-					os.system("clear")
-
+					break
 				elif option2_1 == 4:
 					exit()
 
@@ -127,7 +130,7 @@ def partition():
 						os.system("clear")
 						pv = input("Do You Have a PV?(Y or N): ")
 						
-						if pv == Y:
+						if pv == 'Y':
 							os.system("clear")
 							os.system("pvdisplay")
 							pv = input("Enter Your PV Name: ")
@@ -135,7 +138,7 @@ def partition():
 							vg = input("Enter Your VG Name: ")
 							os.system(f"vgextend {vg} {pv}")
 
-						elif pv == N:
+						elif pv == 'N':
 							os.system("clear")
 							os.system("fdisk -l")
 							disk_name = input("Enter your disk name(e.g-sda): ")
